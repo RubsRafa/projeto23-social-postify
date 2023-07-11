@@ -1,15 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { User } from './entity/User';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { UsersRepository } from './repository/user.repository';
 
 @Injectable()
 export class UserService {
-  users = [];
+  constructor(private readonly usersRepository: UsersRepository) { }
 
-  createUser(body: User) {
-    const userExist = this.users.find((u) => u.email);
-    if(userExist) throw new HttpException('This email is already in use', HttpStatus.CONFLICT);
-
-    this.users.push(body);
+  async createUser(body: CreateUserDTO) {
+    const user = await this.usersRepository.findUserByEmail(body.email);
+    if (user) throw new HttpException('User already exists.', HttpStatus.CONFLICT);
     return;
   }
 
