@@ -7,6 +7,6 @@ export class PublicationsService {
     constructor(private readonly publicationsRepository: PublicationRepository) {}
 
     async createPublication(body: CreatePublicationDTO, userId: number) {
-        
+        return this.publicationsRepository.createPublication(body, userId)
     }
 }
