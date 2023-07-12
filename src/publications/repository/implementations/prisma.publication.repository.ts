@@ -10,7 +10,12 @@ export class PrismaPublicationRepository implements PublicationRepository {
     async createPublication(data: CreatePublicationDTO, userId: number) {
         return await this.prisma.publications.create({ data: {
             userId,
-
+            image: data.image,
+            title: data.title,
+            text: data.text,
+            dateToPublish: data.dateToPublish,
+            published: data.published,
+            socialMedia: data.socialMedia
         } })
     }
 

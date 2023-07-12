@@ -6,7 +6,7 @@ import { CreatePublicationDTO } from './dto/create-publication.dto';
 export class PublicationsService {
     constructor(private readonly publicationsRepository: PublicationRepository) {}
 
-    async createPublication(body: CreatePublicationDTO) {
+    async createPublication(body: CreatePublicationDTO, userId: number) {
         
     }
 }

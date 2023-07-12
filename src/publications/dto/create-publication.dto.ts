@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDateString, IsNotEmpty, IsNumber, IsString, Matches } from "class-validator";
 
 export class CreatePublicationDTO {
     @IsString()
@@ -15,6 +15,7 @@ export class CreatePublicationDTO {
     
     @IsNotEmpty()
     @IsDateString()
+    @Matches(/^\d{4}-\d{2}-\d{2}$/)
     dateToPublish: string;
 
     published: boolean = false;
