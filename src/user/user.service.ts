@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersRepository } from './repository/user.repository';
 import * as bcrypt from 'bcrypt';
@@ -10,7 +10,7 @@ export class UserService {
 
   async createUser(body: CreateUserDTO) {
     const user = await this.usersRepository.findUserByEmail(body.email);
-    if (user) throw new HttpException('User already exists.', HttpStatus.CONFLICT);
+    if (user) throw new ConflictException('User already exists.');
 
     const hashedPassword = bcrypt.hashSync(body.password, 10);
 
@@ -30,10 +30,10 @@ export class UserService {
 
   async signin(body: SigninUserDTO) {
     const user = await this.usersRepository.findUserByEmail(body.email);
-    if(!user) throw new HttpException('Email or password is incorrect', HttpStatus.UNAUTHORIZED)
+    if(!user) throw new UnauthorizedException('Email or password is incorrect')
 
     const validPassword = bcrypt.compareSync(body.password, user.password);
-    if(!validPassword) throw new HttpException('Email or password is incorrect', HttpStatus.UNAUTHORIZED)
+    if(!validPassword) throw new UnauthorizedException('Email or password is incorrect')
   }
 
 }
