@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthSigninDTO } from './dto/auth-signin.dto';
 import { AuthSignupDTO } from './dto/auth-signup.dto';
 import { UserService } from 'src/user/user.service';
@@ -8,14 +8,15 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
+
+    private ISSUER = 'Rubs';
+    private AUDIENCE = 'users'
+
     constructor(
         private readonly usersService: UserService,
         private readonly usersRepository: UsersRepository,
         private readonly jwTService: JwtService,
     ) {}
-
-    ISSUER = 'Rubs';
-    AUDIENCE = 'users'
 
     async signup(body: AuthSignupDTO) {
         const user = await this.usersService.createUser(body)
@@ -45,6 +46,20 @@ export class AuthService {
                 audience: this.AUDIENCE,
             }
         );
-        return token;
+        return { token };
+    }
+
+    checkToken(token: string) {
+        try {
+            const data = this.jwTService.verify(token, {
+                issuer: this.ISSUER,
+                audience: this.AUDIENCE,
+            });
+
+            return data;
+        } catch (e) {
+            console.log(e);
+            throw new BadRequestException(e)
+        }
     }
 }
