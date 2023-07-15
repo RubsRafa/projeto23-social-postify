@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersRepository } from './repository/user.repository';
 import * as bcrypt from 'bcrypt';
@@ -34,6 +34,12 @@ export class UserService {
 
     const validPassword = bcrypt.compareSync(body.password, user.password);
     if(!validPassword) throw new UnauthorizedException('Email or password is incorrect')
+  }
+
+  async findUserById(id: number) {
+    const user = await this.usersRepository.findUserById(id);
+    if (!user) throw new NotFoundException('User not found.');
+    return user;
   }
 
 }

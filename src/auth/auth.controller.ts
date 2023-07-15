@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthSignupDTO } from './dto/auth-signup.dto';
 import { Users } from '@prisma/client';
 import { AuthGuard } from './authGuard/auth.guard';
-import { User } from './decorators/user.decorators';
+import { UserRequest } from './decorators/user.decorators';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +23,8 @@ export class AuthController {
 
     @UseGuards(AuthGuard)
     @Get('me')
-    async userLogged(@User() user: Users) {
+    async userLogged(@UserRequest() user: Users) {
+        console.log('user', user)
         return user;
     }
 }
