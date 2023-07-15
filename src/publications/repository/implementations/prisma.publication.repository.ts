@@ -14,7 +14,6 @@ export class PrismaPublicationRepository implements PublicationRepository {
             title: data.title,
             text: data.text,
             dateToPublish: data.dateToPublish,
-            published: data.published,
             socialMedia: data.socialMedia
         } })
     }

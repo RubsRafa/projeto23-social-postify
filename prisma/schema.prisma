@@ -28,7 +28,7 @@ model Publications {
   image         String
   title         String   @unique
   text          String
-  dateToPublish DateTime @default(now()) @db.Date
+  dateToPublish String
   published     Boolean  @default(false)
   socialMedia   String
   createdAt     DateTime @default(now())

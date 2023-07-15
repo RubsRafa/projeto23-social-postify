@@ -6,7 +6,7 @@ import { Users } from '@prisma/client';
 import { AuthGuard } from './authGuard/auth.guard';
 import { UserRequest } from './decorators/user.decorators';
 
-@Controller('auth')
+@Controller('')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
@@ -16,13 +16,13 @@ export class AuthController {
         return this.authService.signin(body);
     }
 
-    @Post('signup')
+    @Post('user')
     async signup(@Body() body: AuthSignupDTO) {
         return this.authService.signup(body);
     }
 
     @UseGuards(AuthGuard)
-    @Get('me')
+    @Get('auth/me')
     async userLogged(@UserRequest() user: Users) {
         console.log('user', user)
         return user;

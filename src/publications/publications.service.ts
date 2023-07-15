@@ -8,7 +8,7 @@ export class PublicationsService {
 
     async createPublication(body: CreatePublicationDTO, userId: number) {
         const publication = await this.publicationsRepository.findPublicationByTitle(body.title);
-        if(publication) throw new HttpException('This publication was already created', HttpStatus.CONFLICT);
+        if(publication && publication.userId === userId) throw new HttpException('This publication was already created', HttpStatus.CONFLICT);
 
         return this.publicationsRepository.createPublication(body, userId)
     }

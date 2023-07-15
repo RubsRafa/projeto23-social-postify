@@ -3,11 +3,11 @@ import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { SigninUserDTO } from './dto/signin-user.dto';
 
-@Controller()
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('user')
+  @Post('create')
   createUser(@Body() body: CreateUserDTO) {
     return this.userService.createUser(body);
   }

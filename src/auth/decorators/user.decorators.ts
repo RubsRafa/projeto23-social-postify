@@ -2,7 +2,7 @@ import { ExecutionContext, NotFoundException, createParamDecorator } from "@nest
 
 export const UserRequest = createParamDecorator((data: string, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest();
-    if(!request.body) throw new NotFoundException('User not found.');
-
-    return request.body;
+    if(!request.user) throw new NotFoundException('User not found.');
+    
+    return request.user;
 })

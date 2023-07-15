@@ -5,7 +5,7 @@ import { UserRequest } from 'src/auth/decorators/user.decorators';
 import { Users } from '@prisma/client';
 import { AuthGuard } from 'src/auth/authGuard/auth.guard';
 
-@Controller('publications')
+@Controller('publication')
 export class PublicationsController {
   constructor(private readonly publicationsService: PublicationsService) {}
 
@@ -13,6 +13,7 @@ export class PublicationsController {
   @Post()
   createPublication(@Body() body: CreatePublicationDTO, @UserRequest() user: Users) {
     const userId = user.id;
+    console.log(userId)
     return this.publicationsService.createPublication(body, userId);
   }
 
