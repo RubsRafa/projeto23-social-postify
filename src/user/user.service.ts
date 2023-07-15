@@ -3,16 +3,26 @@ import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersRepository } from './repository/user.repository';
 import * as bcrypt from 'bcrypt';
 import { SigninUserDTO } from './dto/signin-user.dto';
+import { Users } from '@prisma/client';
+import { UpdateUserDTO } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly usersRepository: UsersRepository) { }
+  
+  async updateUser(body: UpdateUserDTO, user: Users) {
+    const userExist = await this.usersRepository.findUserById(user.id);
+    if(!userExist) throw new NotFoundException('User not found.');
+
+    return this.usersRepository.updateUser(body, user.id);
+  }
+
   async deleteUser(id: number) {
     const user = await this.usersRepository.findUserById(id);
     if (!user) throw new NotFoundException('User not found.');
 
     return await this.usersRepository.deleteUser(id);
   }
-  constructor(private readonly usersRepository: UsersRepository) { }
 
   async createUser(body: CreateUserDTO) {
     const user = await this.usersRepository.findUserByEmail(body.email);

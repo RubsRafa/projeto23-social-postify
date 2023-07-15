@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { SigninUserDTO } from './dto/signin-user.dto';
 import { AuthGuard } from 'src/auth/authGuard/auth.guard';
 import { UserRequest } from 'src/auth/decorators/user.decorators';
 import { Users } from '@prisma/client';
+import { UpdateUserDTO } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -26,4 +27,9 @@ export class UserController {
     return this.userService.deleteUser(user.id);
   }
 
+  @UseGuards(AuthGuard)
+  @Put()
+  updateUser(@Body() body: UpdateUserDTO, @UserRequest() user: Users) {
+    return this.userService.updateUser(body, user);
+  }
 }
