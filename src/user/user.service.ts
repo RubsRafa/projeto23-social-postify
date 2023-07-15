@@ -6,6 +6,12 @@ import { SigninUserDTO } from './dto/signin-user.dto';
 
 @Injectable()
 export class UserService {
+  async deleteUser(id: number) {
+    const user = await this.usersRepository.findUserById(id);
+    if (!user) throw new NotFoundException('User not found.');
+
+    return await this.usersRepository.deleteUser(id);
+  }
   constructor(private readonly usersRepository: UsersRepository) { }
 
   async createUser(body: CreateUserDTO) {

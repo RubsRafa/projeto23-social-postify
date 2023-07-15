@@ -7,6 +7,10 @@ import { CreateUserDTO } from "src/user/dto/create-user.dto";
 export class PrismaUsersRepository implements UsersRepository {
     constructor(private readonly prisma: PrismaService) {}
 
+    async deleteUser(id: number) {
+        return await this.prisma.users.delete({ where: { id }})
+    }
+
     async createUser(data: CreateUserDTO) {
         return await this.prisma.users.create({ data: data });
     }
