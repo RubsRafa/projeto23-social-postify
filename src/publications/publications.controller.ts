@@ -13,7 +13,6 @@ export class PublicationsController {
   @Post()
   createPublication(@Body() body: CreatePublicationDTO, @UserRequest() user: Users) {
     const userId = user.id;
-    console.log(userId)
     return this.publicationsService.createPublication(body, userId);
   }
 

@@ -24,7 +24,6 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @Get('auth/me')
     async userLogged(@UserRequest() user: Users) {
-        console.log('user', user)
         return user;
     }
 }
