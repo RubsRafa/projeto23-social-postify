@@ -26,10 +26,22 @@ export class PublicationsController {
 
   @UseGuards(AuthGuard)
   @Put(':id')
-  updatePublication(@Param('id') id: { id: number}, @Body() body: UpdatePublicationDTO, @UserRequest() user: Users) {
+  updatePublication(@Param('id') id: number, @Body() body: UpdatePublicationDTO, @UserRequest() user: Users) {
     const userId = user.id;
     const publicationId = Number(id);
 
     return this.publicationsService.updatePublication(body, userId, publicationId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('filter/:status')
+  getFilteredPublications(@UserRequest() user: Users, @Param('status') status: string ) {
+    const userId = user.id;
+    let published: boolean;
+
+    if(status === 'true') published = true;
+    if(status === 'false') published = false;
+    
+    return this.publicationsService.getFilteredPublications(userId, published);
   }
 }

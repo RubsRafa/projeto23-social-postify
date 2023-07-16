@@ -28,4 +28,11 @@ export class PublicationsService {
 
         return this.publicationsRepository.updatePublication(body, publicationId);
     }
+
+    async getFilteredPublications(userId: number, published: boolean) {
+        const publications = await this.publicationsRepository.getPublications(userId);
+        const filter = publications.filter((p) => p.published === published);
+        
+        return filter;
+    }
 }
