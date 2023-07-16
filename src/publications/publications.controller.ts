@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { PublicationsService } from './publications.service';
 import { CreatePublicationDTO } from './dto/create-publication.dto';
 import { UserRequest } from 'src/auth/decorators/user.decorators';
 import { Users } from '@prisma/client';
 import { AuthGuard } from 'src/auth/authGuard/auth.guard';
+import { UpdatePublicationDTO } from './dto/update-publication.dto';
 
 @Controller('publication')
 export class PublicationsController {
@@ -21,5 +22,14 @@ export class PublicationsController {
   getUserPublications(@UserRequest() user: Users) {
     const userId = user.id;
     return this.publicationsService.getAllPublications(userId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(':id')
+  updatePublication(@Param('id') id: { id: number}, @Body() body: UpdatePublicationDTO, @UserRequest() user: Users) {
+    const userId = user.id;
+    const publicationId = Number(id);
+
+    return this.publicationsService.updatePublication(body, userId, publicationId);
   }
 }
