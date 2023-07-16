@@ -35,4 +35,14 @@ export class PublicationsService {
         
         return filter;
     }
+
+    async deletePublication(userId: number, id: number) {
+        const publication = await this.publicationsRepository.findPublicationById(id);
+
+        if(!publication) throw new NotFoundException('Publication not found.')
+        if(publication.userId !== userId) throw new UnauthorizedException('User does not own publication.')
+
+        this.publicationsRepository.deletePublication(id);
+        return;
+      }
 }

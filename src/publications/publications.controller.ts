@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { PublicationsService } from './publications.service';
 import { CreatePublicationDTO } from './dto/create-publication.dto';
 import { UserRequest } from 'src/auth/decorators/user.decorators';
@@ -34,6 +34,14 @@ export class PublicationsController {
   }
 
   @UseGuards(AuthGuard)
+  @Delete(':publicationId')
+  deletePublication(@UserRequest() user: Users, @Param('publicationId') publicationId: string) {
+    const userId = user.id;
+    const id = Number(publicationId)
+    return this.publicationsService.deletePublication(userId, id)
+  }
+
+  @UseGuards(AuthGuard)
   @Get('filter/:status')
   getFilteredPublications(@UserRequest() user: Users, @Param('status') status: string ) {
     const userId = user.id;
@@ -41,7 +49,7 @@ export class PublicationsController {
 
     if(status === 'true') published = true;
     if(status === 'false') published = false;
-    
+
     return this.publicationsService.getFilteredPublications(userId, published);
   }
 }

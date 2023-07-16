@@ -35,4 +35,9 @@ export class PrismaPublicationRepository implements PublicationRepository {
         return await this.prisma.publications.update({ where: { id: publicationId }, data: {...body, updatedAt: new Date()} })
     }
 
+    async deletePublication(id: number) {
+        await this.prisma.publications.delete({ where: { id }});
+        return;
+    }
+
 }
